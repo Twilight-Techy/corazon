@@ -244,8 +244,6 @@ section { position: relative; }
 .wish__bottom { display: flex; flex-direction: column; align-items: center; }
 .wish__meter { width: 160px; height: 2px; background: var(--ink-faint); margin-top: 18px; border-radius: 2px; overflow: hidden; }
 .wish__meter i { display: block; height: 100%; background: var(--hot); transform-origin: left; transform: scaleX(0); box-shadow: 0 0 10px var(--hot); }
-.wish__head, .wish__controls, .wish__meter { transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
-.is-wished .wish__head, .is-wished .wish__controls, .is-wished .wish__meter { opacity: 0; transform: translateY(-20px); pointer-events: none; }
 .wish__done { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 12vh; gap: 20px; pointer-events: none; }
 .wish__done > * { opacity: 0; }
 .huge { font-family: var(--serif); font-weight: 200; line-height: 0.9; letter-spacing: -0.04em; font-variation-settings: 'SOFT' 100, 'opsz' 144; }
@@ -274,7 +272,9 @@ section { position: relative; }
 @media (max-width: 700px) {
   .hud__chapter .hud__sep { width: 20px; }
   .hud__progress { display: none; }
-  .hero__title { flex-direction: column; gap: 0; align-items: center; }
+  .hero__title { flex-direction: column; gap: 0; align-items: center; font-size: 19vw; }
+  .hero__kicker { flex-direction: column; gap: 8px; }
+  .hero__kicker .line { width: 1px; height: 18px; }
   .reasons__track { padding-left: var(--gutter); bottom: 6vh; }
   .card { width: 72vw; }
   .mem__speed { display: none; }

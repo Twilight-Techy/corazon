@@ -29,6 +29,7 @@ export class Particles {
       uSize: { value: 26 },
       uFitName: { value: 1 },
       uFitAge: { value: 1 },
+      uFitHeart: { value: 1 },
       uBeat: { value: 0 },
       uAlpha: { value: 1 },
       uMouse: { value: new THREE.Vector3(99, 99, 0) },
@@ -42,7 +43,7 @@ export class Particles {
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       vertexShader: /* glsl */ `
-        uniform float uTime, uMorph, uBang, uPixelRatio, uSize, uFitName, uFitAge, uBeat, uAlpha, uMouseForce;
+        uniform float uTime, uMorph, uBang, uPixelRatio, uSize, uFitName, uFitAge, uFitHeart, uBeat, uAlpha, uMouseForce;
         uniform vec3 uMouse;
         uniform vec4 uShock;
         attribute vec3 aGalaxy, aHeart, aAge;
@@ -67,7 +68,7 @@ export class Particles {
           gal.yz = rot(1.05) * gal.yz;
           gal.xy = rot(-0.35) * gal.xy;
 
-          vec3 hrt = aHeart * (1.0 + uBeat * 0.09 * (0.6 + aRand.y * 0.4));
+          vec3 hrt = aHeart * uFitHeart * (1.0 + uBeat * 0.09 * (0.6 + aRand.y * 0.4));
           vec3 age = aAge * uFitAge;
 
           float t1 = stageT(uMorph, 1.0, aRand.x);
@@ -148,5 +149,6 @@ export class Particles {
   resize(visibleWidth) {
     this.uniforms.uFitName.value = Math.min(1, (visibleWidth * 0.86) / this.nameWidth)
     this.uniforms.uFitAge.value = Math.min(1, (visibleWidth * 0.8) / this.ageWidth)
+    this.uniforms.uFitHeart.value = Math.min(1, (visibleWidth * 0.78) / 3.7)
   }
 }

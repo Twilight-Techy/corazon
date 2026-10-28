@@ -276,7 +276,7 @@ function buildScroll() {
   })
   const wishSplit = SplitText.create('.wish__title > span', { type: 'chars', mask: 'chars' })
   gsap.from(wishSplit.chars, { yPercent: 100, stagger: 0.025, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: '.s-wish', start: 'top 30%' } })
-  gsap.from(['.wish__sub', '.wish__controls', '.wish__meter'], { y: 30, opacity: 0, stagger: 0.1, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.s-wish', start: 'top 20%' } })
+  gsap.fromTo(['.wish__sub', '.wish__controls', '.wish__meter'], { y: 30, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.s-wish', start: 'top 20%' } })
   ScrollTrigger.create({ trigger: '.s-wish', start: 'top 40%', end: 'bottom top', onToggle: (self) => (inWish = self.isActive) })
 
   // 07 letter
@@ -365,6 +365,7 @@ function wish() {
   audio.stopListening()
   micLevel = null
   $('.s-wish').classList.add('is-wished')
+  gsap.to(['.wish__head', '.wish__bottom'], { opacity: 0, y: -20, duration: 0.8, ease: 'power2.out', pointerEvents: 'none' })
   const delays = world.celebrate()
   delays.forEach((d) => audio.pop(d + 0.05))
   const songLen = audio.happyBirthday()
@@ -453,6 +454,8 @@ $('#replay').addEventListener('click', () => {
       blowAcc = 0
       world.cake.relight()
       $('.s-wish').classList.remove('is-wished')
+      gsap.set(['.wish__head', '.wish__bottom'], { opacity: 1, y: 0, pointerEvents: 'auto' })
+      gsap.set(['#blowMeter', '.btn__fill'], { scaleX: 0 })
       gsap.set('.wish__done > *', { opacity: 0 })
       const s = world.state
       s.bang = 0; s.introMorph = 1

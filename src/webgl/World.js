@@ -64,7 +64,7 @@ export class World {
     // ── post ──
     this.composer = new EffectComposer(this.renderer)
     this.composer.addPass(new RenderPass(this.scene, this.camera))
-    this.bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.0, 0.6, 0.55)
+    this.bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.0, 0.6, 0.42)
     this.composer.addPass(this.bloom)
     this.composer.addPass(new OutputPass())
     this.final = new ShaderPass(FinalShader)
@@ -94,6 +94,7 @@ export class World {
     this.final.uniforms.uRes.value.set(w * this.dpr, h * this.dpr)
     const visH = 2 * 10 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2))
     this.particles.resize(visH * this.camera.aspect)
+    this.gallery.layout(this.camera.aspect)
     for (const u of [this.particles.uniforms, this.space.uniforms, this.fireworks.uniforms, this.cake.smokeUni, this.cake.dustUni]) {
       u.uPixelRatio.value = this.dpr * (h / 900)
     }

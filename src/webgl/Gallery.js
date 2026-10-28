@@ -100,10 +100,11 @@ export class Gallery {
       const side = i % 2 ? 1 : -1
       const base = new THREE.Vector3(tmp.x + side * 2.15, tmp.y + Math.sin(i * 1.9) * 0.7, z)
       mesh.position.copy(base)
+      this.W = W; this.H = H
       mesh.rotation.y = -side * 0.32
       mesh.rotation.z = side * 0.04
       this.group.add(mesh)
-      this.items.push({ mesh, base, z, side, uniforms, phase: Math.random() * 6 })
+      this.items.push({ mesh, base, z, side, uniforms, phase: Math.random() * 6, pathX: tmp.x })
 
       loader.load(item.src, (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace
@@ -113,6 +114,18 @@ export class Gallery {
         uniforms.uImgAspect.value = tex.image.width / tex.image.height
         uniforms.uLoaded.value = 1
       })
+    })
+  }
+
+  // pull photos toward the path (and shrink them) on narrow portrait screens
+  layout(aspect) {
+    const k = THREE.MathUtils.clamp((aspect - 0.45) / 0.75, 0, 1)
+    const offset = THREE.MathUtils.lerp(0.95, 2.15, k)
+    const scale = THREE.MathUtils.lerp(0.72, 1, k)
+    this.items.forEach((it) => {
+      it.base.x = it.pathX + it.side * offset
+      it.mesh.position.x = it.base.x
+      it.mesh.scale.set(this.W * scale, this.H * scale, 1)
     })
   }
 
