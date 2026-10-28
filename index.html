@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#060309" />
+    <title>Corazón — Happy Birthday</title>
+    <meta name="description" content="A small universe, made for one." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💗</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,200..900,0..100;1,9..144,200..900,0..100&family=Manrope:wght@300;400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet" />
+  </head>
+  <body class="is-loading">
+    <canvas id="webgl" aria-hidden="true"></canvas>
+    <canvas id="confetti" aria-hidden="true"></canvas>
+    <div class="flash" aria-hidden="true"></div>
+
+    <!-- ░░ LOADER ░░ -->
+    <div class="loader" id="loader">
+      <div class="loader__top">
+        <span class="mono">corazón / v.25</span>
+        <span class="mono loader__status">calibrating the universe</span>
+      </div>
+      <div class="loader__count"><span id="loadCount">000</span><sup>%</sup></div>
+      <svg class="loader__pulse" viewBox="0 0 600 80" preserveAspectRatio="none">
+        <path id="pulsePath" d="M0 40 H220 L240 40 L252 12 L266 70 L280 24 L290 46 L300 40 H600" />
+      </svg>
+      <button class="enter" id="enter" data-cursor="enter" aria-label="Enter">
+        <svg class="enter__ring" viewBox="0 0 200 200">
+          <defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
+          <text><textPath href="#circ">step inside her universe ✦ step inside her universe ✦ </textPath></text>
+        </svg>
+        <span class="enter__heart">
+          <svg viewBox="0 0 32 29"><path d="M16 28.6S0 18.8 0 8.6C0 3.9 3.7 0 8.3 0c3.2 0 6 1.8 7.7 4.4C17.7 1.8 20.5 0 23.7 0 28.3 0 32 3.9 32 8.6c0 10.2-16 20-16 20z"/></svg>
+        </span>
+      </button>
+      <div class="loader__bottom">
+        <span class="mono">◐ best with sound on</span>
+        <span class="mono">a birthday, in seven chapters</span>
+      </div>
+    </div>
+
+    <!-- ░░ HUD ░░ -->
+    <header class="hud">
+      <a class="hud__logo" href="#top" data-cursor="top" data-magnetic>
+        <svg viewBox="0 0 32 29"><path d="M16 28.6S0 18.8 0 8.6C0 3.9 3.7 0 8.3 0c3.2 0 6 1.8 7.7 4.4C17.7 1.8 20.5 0 23.7 0 28.3 0 32 3.9 32 8.6c0 10.2-16 20-16 20z"/></svg>
+        <span>corazón</span>
+      </a>
+      <div class="hud__chapter mono"><span class="hud__num" id="chapNum">01</span><span class="hud__sep"></span><span id="chapName">Arrival</span></div>
+      <button class="hud__sound" id="sound" data-cursor="sound" data-magnetic aria-label="Toggle sound">
+        <span class="bars"><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="mono" id="soundLabel">sound on</span>
+      </button>
+      <div class="hud__progress"><i id="progressBar"></i></div>
+    </header>
+
+    <div class="cursor" aria-hidden="true">
+      <div class="cursor__dot"></div>
+      <div class="cursor__ring"><span class="cursor__label"></span></div>
+    </div>
+
+    <main id="top">
+      <!-- 01 ARRIVAL -->
+      <section class="s-hero" data-chapter="01" data-title="Arrival">
+        <div class="hero__kicker mono"><span id="heroDate"></span><span class="line"></span><span>a little universe, made for one</span></div>
+        <h1 class="hero__title">
+          <span class="hero__line hero__line--a">Happy</span>
+          <span class="hero__line hero__line--b">Birthday</span>
+        </h1>
+        <p class="hero__sub">Scroll gently. Everything here was made <em>for you.</em></p>
+        <div class="hero__scroll mono"><span>scroll to begin</span><i></i></div>
+        <div class="hero__hint mono">click anywhere ✦ make waves</div>
+      </section>
+
+      <!-- 02 ORIGIN -->
+      <section class="s-origin" data-chapter="02" data-title="Origin">
+        <div class="sticky">
+          <div class="origin__line" data-i="0"><p></p></div>
+          <div class="origin__line" data-i="1"><p></p></div>
+          <div class="origin__line origin__line--age" data-i="2"><p></p></div>
+        </div>
+      </section>
+
+      <!-- 03 MEMORIES -->
+      <section class="s-memories" data-chapter="03" data-title="Memories">
+        <div class="sticky">
+          <div class="mem__intro">
+            <span class="mono">chapter iii</span>
+            <h2 class="big"><span>The archive</span><span><em>of us</em></span></h2>
+            <span class="mono">fly through it slowly</span>
+          </div>
+          <div class="mem__caption">
+            <span class="mono mem__idx"><b id="memIdx">01</b> / <span id="memTotal">11</span></span>
+            <p class="mem__text" id="memText"></p>
+            <span class="mono mem__meta" id="memMeta"></span>
+          </div>
+          <div class="mem__speed mono"><span>velocity</span><i id="memSpeed"></i></div>
+        </div>
+      </section>
+
+      <!-- 04 REASONS -->
+      <section class="s-reasons" data-chapter="04" data-title="Reasons">
+        <div class="sticky">
+          <div class="marquee" aria-hidden="true">
+            <div class="marquee__row"><span>reasons the world is better with you in it ✦ reasons the world is better with you in it ✦ </span></div>
+            <div class="marquee__row marquee__row--rev"><span>adored ✦ cherished ✦ celebrated ✦ adored ✦ cherished ✦ celebrated ✦ </span></div>
+          </div>
+          <div class="reasons__head">
+            <span class="mono">chapter iv</span>
+            <h2 class="big"><span>Six reasons</span><span><em>(of thousands)</em></span></h2>
+          </div>
+          <div class="reasons__track" id="reasonsTrack"></div>
+        </div>
+      </section>
+
+      <!-- 05 MOMENT -->
+      <section class="s-numbers" data-chapter="05" data-title="In numbers">
+        <div class="numbers__inner">
+          <span class="mono">chapter v · since the day you arrived</span>
+          <div class="numbers__grid">
+            <div class="num"><b data-count="days">0</b><span>days of you</span></div>
+            <div class="num"><b data-count="hours">0</b><span>hours of light</span></div>
+            <div class="num"><b data-count="beats">0</b><span>heartbeats &amp; counting</span></div>
+          </div>
+          <p class="numbers__note">(this is live — every second you’re here, it grows.)</p>
+        </div>
+      </section>
+
+      <section class="s-moment" data-chapter="05" data-title="A moment">
+        <div class="sticky">
+          <div class="moment__text moment__text--a"><span>Some moments</span></div>
+          <div class="moment__mask">
+            <video id="momentVideo" muted loop playsinline preload="auto"></video>
+            <div class="moment__shade"></div>
+          </div>
+          <div class="moment__text moment__text--b"><span>deserve <em>forever.</em></span></div>
+          <div class="moment__cap mono">▶ placeholder clip — swap in your favourite video</div>
+        </div>
+      </section>
+
+      <!-- 06 WISH -->
+      <section class="s-approach" aria-hidden="true"></section>
+      <section class="s-wish" data-chapter="06" data-title="The wish">
+        <div class="wish__ui">
+          <div class="wish__head">
+            <span class="mono">chapter vi</span>
+            <h2 class="big wish__title"><span>Make a wish,</span><span><em class="js-name"></em></span></h2>
+            <p class="wish__sub">Close your eyes. Blow into your microphone — or hold the button — and let the universe handle the rest.</p>
+          </div>
+          <div class="wish__bottom">
+          <div class="wish__controls">
+            <button class="btn btn--hold" id="holdBtn" data-cursor="hold" data-magnetic>
+              <span class="btn__fill"></span><span class="btn__label">hold to blow</span>
+            </button>
+            <button class="btn btn--ghost" id="micBtn" data-cursor="mic" data-magnetic>
+              <span class="btn__label">🎙 use my breath</span>
+            </button>
+          </div>
+          <div class="wish__meter"><i id="blowMeter"></i></div>
+          </div>
+          <div class="wish__done">
+            <h2 class="huge"><span class="hb">Happy Birthday</span><span class="nm js-name"></span></h2>
+            <p class="mono">your wish is already in orbit ✦ scroll for one last thing</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 LETTER -->
+      <section class="s-letter" data-chapter="07" data-title="The letter">
+        <div class="letter">
+          <span class="mono">chapter vii</span>
+          <h2 class="letter__dear">Dear <em class="js-name"></em>,</h2>
+          <div class="letter__body" id="letterBody"></div>
+          <div class="letter__sign">
+            <span class="mono">with all my love,</span>
+            <span class="signature js-from"></span>
+          </div>
+        </div>
+        <footer class="footer">
+          <button class="replay" id="replay" data-cursor="again" data-magnetic>
+            <span>Replay the universe</span><i>↺</i>
+          </button>
+          <span class="mono">made with an absurd amount of love · <span class="js-year"></span></span>
+        </footer>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
