@@ -22,18 +22,54 @@ export function galaxy(count) {
 }
 
 export function heart(count, size = 3.6) {
+  // outline polyline, sampled by arc length so the tips don't clump
+  const N = 180
+  const poly = []
+  for (let i = 0; i < N; i++) {
+    const t = (i / N) * Math.PI * 2
+    poly.push([16 * Math.pow(Math.sin(t), 3), 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)])
+  }
+  const cum = [0]
+  for (let i = 1; i <= N; i++) {
+    const a = poly[i - 1], b = poly[i % N]
+    cum.push(cum[i - 1] + Math.hypot(b[0] - a[0], b[1] - a[1]))
+  }
+  const total = cum[N]
+  const inside = (x, y) => {
+    let c = false
+    for (let i = 0, j = N - 1; i < N; j = i++) {
+      const [xi, yi] = poly[i], [xj, yj] = poly[j]
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c
+    }
+    return c
+  }
+  // rasterise the inside test once so interior sampling is O(1)
+  const G = 128
+  const mask = new Uint8Array(G * G)
+  for (let gy = 0; gy < G; gy++) for (let gx = 0; gx < G; gx++) mask[gy * G + gx] = inside(-16 + ((gx + 0.5) / G) * 32, -17 + ((gy + 0.5) / G) * 29)
+  const isIn = (x, y) => mask[Math.min(G - 1, ((y + 17) / 29) * G | 0) * G + Math.min(G - 1, ((x + 16) / 32) * G | 0)]
   const out = new Float32Array(count * 3)
   const s = size / 32
   for (let i = 0; i < count; i++) {
-    const t = Math.random() * Math.PI * 2
-    // most points hug the outline so the shape reads clearly
-    const k = Math.random() < 0.55 ? 1 - Math.random() * 0.04 : Math.sqrt(Math.random())
-    const x = 16 * Math.pow(Math.sin(t), 3)
-    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)
-    const puff = Math.sqrt(Math.max(0, 1 - k * k))
-    out[i * 3] = x * k * s
-    out[i * 3 + 1] = (y * k + 2.5) * s
-    out[i * 3 + 2] = gauss() * (0.08 + puff * 0.9)
+    let x, y, edge
+    if (Math.random() < 0.5) {
+      const d = Math.random() * total
+      let lo = 0, hi = N
+      while (lo < hi - 1) { const mid = (lo + hi) >> 1; cum[mid] <= d ? (lo = mid) : (hi = mid) }
+      const a = poly[lo], b = poly[(lo + 1) % N]
+      const f = (d - cum[lo]) / (cum[lo + 1] - cum[lo] || 1)
+      x = a[0] + (b[0] - a[0]) * f + gauss() * 0.25
+      y = a[1] + (b[1] - a[1]) * f + gauss() * 0.25
+      edge = 1
+    } else {
+      do { x = rand(-16, 16); y = rand(-17, 12) } while (!isIn(x, y))
+      edge = 0
+    }
+    // puffy: thicker in the middle of the heart
+    const r = Math.min(1, Math.hypot(x / 16, (y + 2) / 15))
+    out[i * 3] = x * s
+    out[i * 3 + 1] = (y + 2.5) * s
+    out[i * 3 + 2] = gauss() * (edge ? 0.08 : 0.08 + Math.sqrt(1 - r * r) * 0.8)
   }
   return out
 }

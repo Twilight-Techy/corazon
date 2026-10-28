@@ -218,18 +218,17 @@ function buildScroll() {
   gsap.from(headSplit.chars, { yPercent: 100, stagger: 0.02, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: section, start: 'top 40%' } })
   gsap.from(cards, { y: 220, opacity: 0, stagger: 0.08, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: section, start: 'top 30%' } })
   const tilt = cards.map((c) => ({ c, img: c.querySelector('img'), skew: gsap.quickTo(c, 'skewX', { duration: 0.8, ease: 'power3.out' }) }))
-  ScrollTrigger.create({
-    trigger: section, start: 'top top', end: 'bottom bottom',
-    onUpdate: (self) => {
-      const v = clamp(self.getVelocity() / 2500, -1, 1)
-      tilt.forEach(({ skew, img, c }) => {
-        skew(v * -7)
-        const r = c.getBoundingClientRect()
-        const k = (r.left + r.width / 2) / innerWidth - 0.5
-        gsap.set(img, { xPercent: k * -12 })
-      })
-    },
-  })
+  ScrollTrigger.create({ trigger: section, start: 'top bottom', end: 'bottom top', onToggle: (self) => (inReasons = self.isActive) })
+  // runs every frame (from frame()) so the skew relaxes once scrolling stops
+  updateReasons = () => {
+    const v = clamp(world.state.vel, -1, 1)
+    tilt.forEach(({ skew, img, c }) => {
+      skew(v * -7)
+      const r = c.getBoundingClientRect()
+      const k = (r.left + r.width / 2) / innerWidth - 0.5
+      gsap.set(img, { xPercent: k * -12 })
+    })
+  }
   cards.forEach((c) => {
     const glare = c.querySelector('.card__glare')
     c.addEventListener('pointermove', (e) => {
@@ -293,6 +292,8 @@ function buildScroll() {
 
 /* ───────────────────────── per-frame UI ───────────────────────── */
 let liveCounters = null
+let updateReasons = null
+let inReasons = false
 let memIdx = -2
 const memText = $('#memText'), memMeta = $('#memMeta'), memIdxEl = $('#memIdx'), memSpeed = $('#memSpeed')
 
@@ -328,6 +329,7 @@ function frame(dt) {
   }
   memSpeed.style.setProperty('--v', Math.min(Math.abs(world.state.vel), 1).toFixed(3))
   liveCounters?.()
+  if (inReasons) updateReasons?.()
 
   // ── the wish ──
   if (inWish && !wished) {

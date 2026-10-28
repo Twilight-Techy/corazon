@@ -96,8 +96,8 @@ export class Cake {
     this.time = 0
     this.wind = 0
 
-    const sponge = new THREE.MeshPhysicalMaterial({ color: '#f9c9d6', roughness: 0.55, sheen: 1, sheenColor: '#ffffff', sheenRoughness: 0.5 })
-    const sponge2 = new THREE.MeshPhysicalMaterial({ color: '#fff1e6', roughness: 0.6, sheen: 1, sheenColor: '#ffd6e3', sheenRoughness: 0.5 })
+    const sponge = new THREE.MeshPhysicalMaterial({ color: '#efb4c4', roughness: 0.6, sheen: 1, sheenColor: '#ffffff', sheenRoughness: 0.5 })
+    const sponge2 = new THREE.MeshPhysicalMaterial({ color: '#f0d2c8', roughness: 0.65, sheen: 1, sheenColor: '#ffd6e3', sheenRoughness: 0.5 })
     const glaze = new THREE.MeshPhysicalMaterial({ color: '#ff3d7f', roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.1 })
     const cream = new THREE.MeshPhysicalMaterial({ color: '#fff4ec', roughness: 0.25, clearcoat: 0.8, clearcoatRoughness: 0.2 })
     const gold = new THREE.MeshStandardMaterial({ color: '#f1c48f', metalness: 1, roughness: 0.22 })

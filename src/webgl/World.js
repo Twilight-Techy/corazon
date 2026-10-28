@@ -97,7 +97,7 @@ export class World {
     for (const u of [this.particles.uniforms, this.space.uniforms, this.fireworks.uniforms, this.cake.smokeUni, this.cake.dustUni]) {
       u.uPixelRatio.value = this.dpr * (h / 900)
     }
-    this.cakeDist = this.camera.aspect < 0.8 ? 7.6 / Math.max(this.camera.aspect, 0.45) * 0.62 : 7.6
+    this.cakeDist = this.camera.aspect < 0.8 ? 9.6 / Math.max(this.camera.aspect, 0.45) * 0.7 : 9.6
   }
 
   setMouse(x, y) {
@@ -153,9 +153,9 @@ export class World {
     this._pos.y += this.mouseSmooth.y * 0.3 * par
     const ck = ease(THREE.MathUtils.clamp(s.cake, 0, 1))
     if (ck > 0) {
-      const camCake = this._tmp.set(CAKE_POS.x + this.mouseSmooth.x * 0.6, CAKE_POS.y + 2.9 + this.mouseSmooth.y * 0.3, CAKE_POS.z + this.cakeDist)
+      const camCake = this._tmp.set(CAKE_POS.x + this.mouseSmooth.x * 0.6, CAKE_POS.y + 3.3 + this.mouseSmooth.y * 0.3, CAKE_POS.z + this.cakeDist)
       this._pos.lerp(camCake, ck)
-      this._look.lerp(new THREE.Vector3(CAKE_POS.x, CAKE_POS.y + 1.75, CAKE_POS.z), ck)
+      this._look.lerp(new THREE.Vector3(CAKE_POS.x, CAKE_POS.y + 2.15, CAKE_POS.z), ck)
     }
     this.camera.position.x = damp(this.camera.position.x, this._pos.x, 5, dt)
     this.camera.position.y = damp(this.camera.position.y, this._pos.y, 5, dt)
